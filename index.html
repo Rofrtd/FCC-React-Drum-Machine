@@ -1,68 +1,73 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css">
-    <title></title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <audio src="">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+  <title></title>
+</head>
+<body>
+  <div id="app"></div>
 
-    </audio>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
 
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.6.0/marked.js" integrity="sha256-1CpaA8/InyL5ehvUOYj0zdCelaGHRvamU3fEE91XqgU=" crossorigin="anonymous"></script>
+  <script type="text/javascript">
 
-    <script type="text/javascript">
+  const data = [
+    { id: 'snare', letter: 'Q', src: 'https://www.myinstants.com/media/sounds/snare.mp3' },
+    { id: 'bass 1', letter: 'W', src: 'https://www.myinstants.com/media/sounds/bass-drum.mp3' },
+    { id: 'bongo', letter: 'E', src: 'http://tipiwiki.free.fr/snd/Percussion(4e)2.wav' },
+    { id: 'tom tom', letter: 'A', src: 'http://www.denhaku.com/r_box/sr16/sr16tom/loelectm.wav' },
+    { id: 'bass 3', letter: 'S', src: 'http://billor.chsh.chc.edu.tw/sound/bass4.wav' },
+    { id: 'shotgun', letter: 'D', src: 'http://david.guerrero.free.fr/Effects/ShotgunReload.wav' },
+    { id: 'high hat', letter: 'Z', src: 'http://www.denhaku.com/r_box/tr707/closed.wav' },
+    { id: 'drum hit', letter: 'X', src: 'http://www.masterbits.de/sc_docu/sounds1/1TM00013.MP3' },
+    { id: 'laser', letter: 'C', src: 'http://www.sa-matra.net/sounds/starcontrol/Umgah-Backzip.wav'  },
+  ]
+  const e = React.createElement;
 
-    const data = [
-      { id: 'snare', letter: 'Q', src: 'https://www.myinstants.com/media/sounds/snare.mp3' },
-      { id: 'bass 1', letter: 'W', src: 'https://www.myinstants.com/media/sounds/bass-drum.mp3' },
-      { id: 'bongo', letter: 'E', src: 'http://tipiwiki.free.fr/snd/Percussion(4e)2.wav' },
-      { id: 'tom tom', letter: 'A', src: 'http://www.denhaku.com/r_box/sr16/sr16tom/loelectm.wav' },
-      { id: 'bass 3', letter: 'S', src: 'http://billor.chsh.chc.edu.tw/sound/bass4.wav' },
-      { id: 'shotgun', letter: 'D', src: 'http://david.guerrero.free.fr/Effects/ShotgunReload.wav' },
-      { id: 'high hat', letter: 'Z', src: 'http://www.denhaku.com/r_box/tr707/closed.wav' },
-      { id: 'drum hit', letter: 'X', src: 'http://www.masterbits.de/sc_docu/sounds1/1TM00013.MP3' },
-      { id: 'laser', letter: 'C', src: 'http://www.sa-matra.net/sounds/starcontrol/Umgah-Backzip.wav'  },
-    ]
-      const e = React.createElement;
+  class DrumPad extends React.Component {
+    constructor(props){
+      super(props);
+      this.handleClick = this.handleClick.bind(this);
+      this.handleKeydown = this.handleKeydown.bind(this);
+    }
 
-      class DrumPad extends React.Component {
-        constructor(props){
-          super(props);
-          this.handleClick = this.handleClick.bind(this);
-          this.handleKeydown = this.handleKeydown.bind(this);
-        }
+    componentDidMount(){
+      document.addEventListener('keydown', this.handleKeydown)
+    }
 
-        componentDidMount(){
-          document.addEventListener('keydown', this.handleKeydown)
-        }
+    componentWillUnmount(){
+      document.removeEventListener('keydown', this.handleKeydown)
+    }
 
-        componentWillUnmount(){
-          document.removeEventListener('keydown', this.handleKeydown)
-        }
-
-        handleKeydown(event) {
-          if(event.keyCode === this.props.letter.charCodeAt()) {
-            this.audio.play()
-            this.audio.currentTime = 0
-            this.props.handleDisplay(this.props.id)
-          }
-        }
-        handleClick() {
-          this.audio.play()
-          this.audio.currentTime = 0
-          this.props.handleDisplay(this.props.id)
-        }
+    handleKeydown(event) {
+      if(event.keyCode === this.props.letter.charCodeAt()) {
+        this.audio.play()
+        this.audio.currentTime = 0
+        this.props.handleDisplay(this.props.id)
+      }
+    }
+    handleClick() {
+      this.audio.play()
+      this.audio.currentTime = 0
+      this.props.handleDisplay(this.props.id)
+    }
 
 
-        render(){
-          return (
-            e('div', {className: 'drum-pad', id:this.props.id, onClick: this.handleClick}, e('h1', null, this.props.letter), e('audio', {id: this.props.letter, src: this.props.src, className: 'clip', ref: ref => this.audio = ref}))
+    render(){
+      return (
+        e('div', {
+          className: 'drum-pad',
+          id:this.props.id,
+          onClick: this.handleClick},
+          e('h1', null, this.props.letter),
+          e('audio', {
+            id: this.props.letter,
+            src: this.props.src,
+            className: 'clip',
+            ref: ref => this.audio = ref}))
           )
         }
       }
@@ -84,7 +89,7 @@
           return e('div', {id:'drum-machine'},
           e('div', {id:"display"}, this.state.display),
           e('div',{id:'drum-pads'}, data.map(d => {
-              return e(DrumPad, {
+            return e(DrumPad, {
               key: d.id,
               id: d.id,
               letter: d.letter,
@@ -94,11 +99,11 @@
           })
         )
 
-          )
-        }
-      }
+      )
+    }
+  }
 
-          ReactDOM.render(e(DrumMachine), document.getElementById('app'));
-    </script>
-  </body>
+  ReactDOM.render(e(DrumMachine), document.getElementById('app'));
+  </script>
+</body>
 </html>
